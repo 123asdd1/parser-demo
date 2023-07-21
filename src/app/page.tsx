@@ -222,7 +222,7 @@ function MainContent() {
   const [opened, setOpened] = useState(false);
   const [cache, setCache] = useState<Cache>({
     latestBlockNum: "0",
-    curBlockNum: "17739047",
+    curBlockNum: "",
     logs: [],
   });
 
