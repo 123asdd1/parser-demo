@@ -213,12 +213,16 @@ function viewDetail(props: {
   setOpened(!opened);
 }
 
+function truncate(str: string) {
+  return str.slice(0, 10) + "...";
+}
+
 function MainContent() {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   const [cache, setCache] = useState<Cache>({
     latestBlockNum: "0",
-    curBlockNum: "",
+    curBlockNum: "17739047",
     logs: [],
   });
 
@@ -284,17 +288,18 @@ function MainContent() {
                   <Group position="apart">
                     <Box>
                       [{log.parserTime.toUTCString()}]{" "}
-                      {log.fromAddress ===
-                      "0x0000000000000000000000000000000000000000"
-                        ? log.fromAddress.slice(0, 10) + "..."
-                        : log.toAddress.slice(0, 10) + "..."}
-                      <span style={{ fontWeight: "bold" }}>
-                        {log.fromAddress ===
-                        "0x0000000000000000000000000000000000000000"
-                          ? " minted "
-                          : " burned "}
-                      </span>
-                      {log.contract} #{log.punkId}{" "}
+                      {log.contract === "WrappedPunks"
+                        ? log.fromAddress ===
+                          "0x0000000000000000000000000000000000000000"
+                          ? log.fromAddress.slice(0, 10) +
+                            "... minted " +
+                            `${log.contract} #${log.punkId} to`
+                          : log.toAddress.slice(0, 10) +
+                            "... burned " +
+                            `${log.contract} #${log.punkId} to`
+                        : `${truncate(log.fromAddress)} transfer punk #${
+                            log.punkId
+                          } to ${truncate(log.toAddress)}`}
                     </Box>
                     <Anchor
                       href={`https://etherscan.io/tx/${log.hash}`}
